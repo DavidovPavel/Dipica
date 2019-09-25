@@ -1,7 +1,7 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
-const read = require('node-readability');
 const Article = require('./db').Article;
 
 app.set('port', process.env.PORT || 3000);
@@ -10,8 +10,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use('/css/bootstrap.css', express.static('node_modules/bootstrap/dist/css/bootstrap.css'));
+app.use(express.static(path.join(__dirname, 'assets')));
 
-app.get('/articles', (req, res, next) => {
+app.get('/', (req, res, next) => {
     Article.all((err, articles) => {
         if (err) return next(err);
         res.format({
@@ -26,7 +27,7 @@ app.get('/articles', (req, res, next) => {
 
 });
 
-app.get('/articles/:id', (req, res, next) => {
+app.get('/:id', (req, res, next) => {
     const id = req.params.id;
     Article.find(id, (err, article) => {
         if (err) return next(err);
@@ -41,29 +42,12 @@ app.get('/articles/:id', (req, res, next) => {
     });
 });
 
-app.post('/articles', (req, res, next) => {
-    const url = req.body.url;
-    read(url, (err, result) => {
-        if (err || !result) res.status(500).send('Error download article');
-        Article.create({
-            title: result.title,
-            content: result.content
-        }, (err, article) => {
-            if (err) return next(err);
-            res.send('Ok');
-        });
-    });
-});
-
-app.delete('/articles/:id', (req, res, next) => {
-    const id = req.params.id;
-    Article.delete(id, (err) => {
-        if (err) return next(err);
-        res.send({
-            message: 'Deleted.'
-        });
-    });
-});
+// app.use(function(req, res, next) {
+//     var err = new Error('Not Found');
+//     err.status = 404;
+//     next(err);
+//   });
+  
 
 app.listen(app.get('port'), () => console.log(`App started on port: ${app.get('port')}`));
 

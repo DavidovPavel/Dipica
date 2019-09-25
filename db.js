@@ -1,31 +1,19 @@
-const sqlite3 = require('sqlite3');
-const dbName = 'later.sqlite';
-const db = new sqlite3.Database(dbName);
-
-db.serialize(() => {
-    const sql = `CREATE TABLE IF NOT EXISTS articles (id integer primary key, title, content TEXT)`;
-    db.run(sql);
-});
+const data = [
+  { id: 1, title: '1-10', content: ['1', '2', '3'] },
+  { id: 2, title: '10-20', content: ['4', '5', '6'] },
+  { id: 3, title: '20-30', content: ['7', '8', '9'] },
+];
 
 class Article {
-    static all(cb) {
-        db.all('SELECT * FROM articles', cb);
-    }
+  static all(cb) {
+    cb(null, data);
+  }
 
-    static find(id, cb) {
-        db.get('SELECT * FROM articles WHERE id = ?', id, cb);
-    }
-
-    static create(data, cb) {
-        const sql = 'INSERT INTO articles(title, content) VALUES (?, ?)';
-        db.run(sql, data.title, data.content, cb);
-    }
-
-    static delete(id, cb) {
-        if (!id) return cb(new Error('Please provide an id'));
-        db.run('DELETE FROM articles WHERE id = ?', id, cb);
-    }
+  static find(id, cb) {
+    const item = data.find(a => a.id.toString() === id);
+    if (!item) cb(new Error('Not found'), null);
+    cb(null, item);
+  }
 }
 
-module.exports = db;
 module.exports.Article = Article;

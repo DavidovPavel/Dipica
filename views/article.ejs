@@ -1,2 +1,12 @@
+<% include head %>
+<p class="navigation">
+    <% if(article.id-1 !== 0) { %><a href="/<%= article.id-1 %>">Меньше</a><% } %>
+    <a href="/">К списку</a>
+    <a href="/<%= article.id+1 %>">Больше</a></p>
 <h3><%= article.title %></h3>
-<%= article.content %>
+<div class="wrap">
+    <% article.content.forEach((a) => { %>
+    <img src="/images/<%= a %>.png" alt="" />
+    <% }) %>
+</div>
+<% include foot %>
