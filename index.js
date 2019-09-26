@@ -16,28 +16,29 @@ app.get('/', (req, res, next) => {
     Article.all((err, articles) => {
         if (err) return next(err);
         res.format({
-            html: () => {
-                res.render('articles.ejs', {
-                    articles: articles
-                });
-            },
-            json: () => res.send(articles)
+  html: () => {
+      res.render('articles.ejs', {
+articles: articles
+      });
+  },
+  json: () => res.send(articles)
         });
     });
 
 });
 
-app.get('/:id', (req, res, next) => {
+app.get('/:course/:id', (req, res, next) => {
     const id = req.params.id;
-    Article.find(id, (err, article) => {
+    const course = req.params.course;
+    Article.find(course, id, (err, article) => {
         if (err) return next(err);
         res.format({
-            html: () => {
-                res.render('article.ejs', {
-                    article: article
-                });
-            },
-            json: () => res.send(article)
+  html: () => {
+      res.render('article.ejs', {
+article: article
+      });
+  },
+  json: () => res.send(article)
         });
     });
 });

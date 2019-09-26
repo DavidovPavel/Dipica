@@ -1,5 +1,6 @@
 .wrap {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .wrap img {
@@ -7,6 +8,10 @@
     min-height: 150px;
     border: solid 1px #ccc;
     margin: 6px;
+}
+
+.wrap hr {
+    flex: 1 0 100%;
 }
 
 .navigation {

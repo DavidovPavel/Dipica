@@ -1,12 +1,13 @@
 <% include head %>
 <p class="navigation">
-    <% if(article.id-1 !== 0) { %><a href="/<%= article.id-1 %>">Меньше</a><% } %>
-    <a href="/">К списку</a>
-    <a href="/<%= article.id+1 %>">Больше</a></p>
-<h3><%= article.title %></h3>
+  <a href="/">К списку</a>
+</p>
+<h3><%= article.name %></h3>
 <div class="wrap">
-    <% article.content.forEach((a) => { %>
-    <img src="/images/<%= a %>.png" alt="" />
-    <% }) %>
+  <% article.asans.split(',').forEach((a) => { %> <% if(a== 'line') { %>
+  <hr />
+  <% } else { %>
+  <img src="/asans/<%= a %>.gif" alt="" />
+  <% } %> <% }) %>
 </div>
 <% include foot %>
